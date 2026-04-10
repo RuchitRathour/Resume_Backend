@@ -8,8 +8,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,16 +35,16 @@ public class ResumeServiceImpl implements ResumeService {
 
         String response = chatClient.prompt(prompt).call().content();
 
-        // 👇 Map banega
         Map<String, Object> result = parseMultipleResponses(response);
 
-        // 👇 JSONPObject me wrap
         return new JSONPObject("callback", result);
     }
 
     String loadPromptFromFile(String filename) throws IOException {
-        Path path = new ClassPathResource(filename).getFile().toPath();
-        return Files.readString(path);
+        ClassPathResource resource = new ClassPathResource(filename);
+        try (InputStream inputStream = resource.getInputStream()) {
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 
     String putValuesToTemplate(String template, Map<String, String> values) {
@@ -57,7 +57,6 @@ public class ResumeServiceImpl implements ResumeService {
     public static Map<String, Object> parseMultipleResponses(String response) {
         Map<String, Object> jsonResponse = new HashMap<>();
 
-        // <think> extract
         int thinkStart = response.indexOf("<think>");
         int thinkEnd = response.indexOf("</think>");
 
@@ -68,7 +67,6 @@ public class ResumeServiceImpl implements ResumeService {
             jsonResponse.put("think", null);
         }
 
-        // JSON extract
         int jsonStart = response.indexOf("```json");
         int jsonEnd = response.lastIndexOf("```");
 

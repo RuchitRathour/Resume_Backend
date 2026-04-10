@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3a98fe84-3d99-4904-9724-8fc3027a47a0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resume-ai-backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/resume-ai-backend/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
